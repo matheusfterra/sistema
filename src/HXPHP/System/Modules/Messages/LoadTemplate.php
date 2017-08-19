@@ -1,7 +1,7 @@
 <?php
 namespace HXPHP\System\Modules\Messages;
 
-use HXPHP\System\Tools;
+use HXPHP\System\Tools as Tools;
 
 class LoadTemplate
 {
@@ -21,7 +21,7 @@ class LoadTemplate
      * Método responsável pela leitura do arquivo JSON
      * @param string $template Nome do template
      */
-    public function __construct(string $template, string $extension = '.json')
+    public function __construct($template, $extension = '.json')
     {
         /**
          * Caminho completo do template
@@ -46,7 +46,7 @@ class LoadTemplate
      * Retorna o caminho do template
      * @return string
      */
-    public function getTemplatePath(): string
+    public function getTemplatePath()
     {
         return $this->file;
     }

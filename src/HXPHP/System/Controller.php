@@ -1,10 +1,7 @@
 <?php
 namespace HXPHP\System;
 
-use HXPHP\System\{
-    Http,
-    Configs\Config
-};
+use HXPHP\System\Http as Http;
 
 class Controller
 {
@@ -32,13 +29,13 @@ class Controller
      */
     public $view;
 
-    public function __construct(Config $configs = null)
+    public function __construct($configs = null)
     {
         //Injeção da VIEW
         $this->view = new View;
         $this->response = new Http\Response;
 
-        if ($configs)
+        if ($configs && $configs instanceof Configs\Config)
             $this->setConfigs($configs);
     }
 
@@ -47,7 +44,7 @@ class Controller
      * @param  Config $configs Objeto com as configurações da aplicação
      * @return object
      */
-    public function setConfigs(Config $configs): self
+    public function setConfigs(Configs\Config $configs)
     {
         //Injeção das dependências
         $this->configs = $configs;
@@ -115,7 +112,7 @@ class Controller
      * @param  string $param Atributo
      * @return mixed         Conteúdo do atributo ou Exception
      */
-    public function __get(string $param)
+    public function __get($param)
     {
         if (isset($this->view->$param))
             return $this->view->$param;
@@ -132,7 +129,7 @@ class Controller
      * @param  boolean $controller Define se o controller também será retornado
      * @return string              Link relativo
      */
-    public function getRelativeURL(string $URL, bool $controller = true): string
+    public function getRelativeURL($URL, $controller = true)
     {
         $path = $controller === true ? $this->view->path . DS : $this->view->subfolder;
 
@@ -145,7 +142,7 @@ class Controller
      * @param  boolean $external Define se o redirecionamento será relativo ou absoluto
      * @param  boolean $controller Define se o controller também será retornado
      */
-    public function redirectTo(string $URL, bool $external = true, bool $controller = true)
+    public function redirectTo($URL, $external = true, $controller = true)
     {
         $URL = $external === false ? $this->getRelativeURL($URL, $controller) : $URL;
         return $this->response->redirectTo($URL);

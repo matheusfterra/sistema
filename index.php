@@ -12,7 +12,7 @@ define('ROOT_PATH', dirname(__FILE__) . DS);
 define('APP_PATH', 'app' . DS);
 define('TEMPLATES_PATH', ROOT_PATH . 'templates' . DS);
 
-define('HXPHP_VERSION', '3.0.0-rc.4');
+define('HXPHP_VERSION', '2.6.4');
 
 /**
  * Verifica se o autoload do Composer está configurado
@@ -22,24 +22,8 @@ $composer_autoload = 'vendor' . DS . 'autoload.php';
 if (!file_exists($composer_autoload))
     die('Execute o comando: composer install');
 
-if (version_compare(PHP_VERSION, '7.0.0', '<')) {
-    die('
-    	<h2>
-    		O suporte ao PHP 5 terminou e o reposit&oacute;rio agora encontra-se 
-    		compat&iacute;vel com o PHP 7. 
-    	</h2>
-    	<h3>
-    		Para continuar com PHP 5 use: 
-    		<a href="https://github.com/brunosantoshx/hxphp/releases/tag/v2.18.14">
-    			https://github.com/brunosantoshx/hxphp/releases/tag/v2.18.14
-    		</a>
-    		ou atualize seu PHP para a vers&atilde;o: 7.0.0 ou superior.
-    	</h3>
-    	<h3>
-			Se você optar por atualizar o PHP lembre-se de atualizar todas as depend&ecirc;ncias atrav&eacute;s do Composer.
-    	</h3>
-    ');
- }
+if (version_compare(PHP_VERSION, '5.4.0', '<'))
+    die('Atualize seu PHP para a vers&atilde;o: 5.4.0 ou superior.');
 
 require_once($composer_autoload);
 

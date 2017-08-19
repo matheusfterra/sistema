@@ -6,7 +6,7 @@ class RealLink
     private $siteURL;
     private $baseURI;
 
-    public function __construct(string $siteURL, string $baseURI)
+    public function __construct($siteURL, $baseURI)
     {
         $this->siteURL = $siteURL;
         $this->baseURI = $baseURI;

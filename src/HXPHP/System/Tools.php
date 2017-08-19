@@ -7,7 +7,7 @@ class Tools
      * Exibe os dados
      * @param  mist $data Variável que será "debugada"
      */
-    public static function dd($data, bool $dump = true)
+    public static function dd($data, $dump = false)
     {
         echo '<pre>';
 
@@ -16,7 +16,7 @@ class Tools
         echo '</pre>';
     }
 
-    public static function getTemplatePath(string $component, string $name, string $templateFile)
+    public static function getTemplatePath($component, $name, $templateFile)
     {
         $templatePath = TEMPLATES_PATH . $component . DS . $name . DS . $templateFile;
 
@@ -32,8 +32,9 @@ class Tools
      * @param  string $salt     Código alfanumérico
      * @return array            Array com o SALT e a SENHA
      */
-    public static function hashHX(string $password, string $salt = null): array
+    public static function hashHX($password, $salt = null)
     {
+
         if (!$salt)
             $salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
 
@@ -50,7 +51,7 @@ class Tools
      * @param string $input     String que será convertida
      * @return string           String convertida
      */
-    public static function filteredName(string $input): string
+    public static function filteredName($input)
     {
         $input = explode('?', $input);
         $input = $input[0];
@@ -66,7 +67,7 @@ class Tools
         return str_replace(' ', '', ucwords(str_replace($find, $replace, $input)));
     }
 
-    public static function filteredFileName(string $input): string
+    public static function filteredFileName($input)
     {
         $input = trim($input);
 
@@ -184,7 +185,7 @@ class Tools
         return strtolower(str_replace(' ', '_', str_replace($find, $replace, $new)));
     }
 
-    public static function decamelize(string $cameled, string $sep = '-'): string
+    public static function decamelize($cameled, $sep = '-')
     {
         return implode(
                 $sep, array_map(

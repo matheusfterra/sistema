@@ -8,7 +8,7 @@ class Attrs
      * @param  array  $attrs Atributos
      * @return string        Atributos no formato HTML
      */
-    public static function render(array $attrs): string
+    public static function render($attrs)
     {
         if (!$attrs || !is_array($attrs))
             return null;
@@ -17,6 +17,7 @@ class Attrs
 
         foreach ($attrs as $attr => $value)
             $html .= ' ' . $attr . '="' . $value . '" ';
+
 
         return $html;
     }

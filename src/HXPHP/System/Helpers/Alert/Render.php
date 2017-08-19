@@ -8,7 +8,7 @@ class Render
      * @param  array|string $messages Mensagem pode ser um array com a seguinte estrutura ['Erro' => 'Justicativa' , 'Erro 2' => 'Justificativa 2'] ou uma string
      * @return mixed
      */
-    public function get($messages): string
+    public function get($messages)
     {
         if (!is_array($messages))
             return $messages;

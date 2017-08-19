@@ -15,7 +15,7 @@ class CheckActive
      */
     private $current_URL = null;
 
-    public function __construct(RealLink $realLink, string $current_URL)
+    public function __construct(RealLink $realLink, $current_URL)
     {
         $this->realLink = $realLink;
         $this->current_URL = $current_URL;
@@ -23,10 +23,10 @@ class CheckActive
 
     /**
      * Verifica se o link está ativo
-     * @param  string $URL Link do menu
+     * @param  string $URL Link do menuy
      * @return bool        Status do link
      */
-    public function link(string $URL): bool
+    public function link($URL)
     {
         $position = strpos($this->current_URL, $URL);
         return $this->current_URL === $URL || ($position && $position > 0) ? true : false;
@@ -37,7 +37,7 @@ class CheckActive
      * @param  array $values Links do dropdown
      * @return bool        	 Status do dropdown
      */
-    public function dropdown(array $values): bool
+    public function dropdown(array $values)
     {
         $values = array_values($values);
         $status = false;

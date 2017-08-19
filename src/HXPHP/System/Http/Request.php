@@ -23,17 +23,18 @@ class Request
     /**
      * Método construtor
      */
-    public function __construct(string $baseURI = '', string $controller_directory = '')
+    public function __construct($baseURI = '', $controller_directory = '')
     {
         $this->subfolder = 'default';
         $this->initialize($baseURI, $controller_directory);
+        return $this;
     }
 
     /**
      * Define os parâmetros do mecanismo MVC
      * @return object Retorna o objeto com as propriedades definidas
      */
-    public function initialize(string $baseURI, string $controller_directory)
+    public function initialize($baseURI, $controller_directory)
     {
         if (!empty($baseURI) && !empty($controller_directory)) {
             $explode = array_values(array_filter(explode('/', $_SERVER['REQUEST_URI'])));
@@ -82,7 +83,7 @@ class Request
      * Define filtros/flags customizados (http://php.net/manual/en/filter.filters.sanitize.php)
      * @param array $custom_filters Array com nome do campo e seu respectivo filtro
      */
-    public function setCustomFilters(array $custom_filters = []): array
+    public function setCustomFilters(array $custom_filters = [])
     {
         return $this->custom_filters = $custom_filters;
     }
@@ -102,6 +103,8 @@ class Request
             if (!array_key_exists($key, $custom_filters))
                 $filters[$key] = constant('FILTER_SANITIZE_STRING');
 
+
+
         if (is_array($custom_filters) && is_array($custom_filters))
             $filters = array_merge($filters, $custom_filters);
 
@@ -113,21 +116,19 @@ class Request
      * @param  string $name Nome do parâmetro
      * @return null         Retorna o array GET geral ou em um índice específico
      */
-    public function get(string $name = null)
+    public function get($name = null)
     {
         $get = $this->filter($_GET, INPUT_GET, $this->custom_filters);
 
-        if (!$name) {
-            foreach ($get as $field => $value)
-                $get[$field] = is_array($value) ? array_map('trim', $value) : trim($value);
-
+        if (!$name)
             return $get;
-        }
+
 
         if (!isset($get[$name]))
             return null;
 
-        return trim($get[$name]);
+
+        return $get[$name];
     }
 
     /**
@@ -135,21 +136,18 @@ class Request
      * @param  string $name Nome do parâmetro
      * @return null         Retorna o array POST geral ou em um índice específico
      */
-    public function post(string $name = null)
+    public function post($name = null)
     {
         $post = $this->filter($_POST, INPUT_POST, $this->custom_filters);
 
-        if (!$name) {
-            foreach ($post as $field => $value)
-                $post[$field] = is_array($value) ? array_map('trim', $value) : trim($value);
-
+        if (!$name)
             return $post;
-        }
 
         if (!isset($post[$name]))
             return null;
 
-        return trim($post[$name]);
+
+        return $post[$name];
     }
 
     /**
@@ -157,7 +155,7 @@ class Request
      * @param  string $name Nome do parâmetro
      * @return null         Retorna o array $_SERVER geral ou em um índice específico
      */
-    public function server(string $name = null)
+    public function server($name = null)
     {
         $server = $this->filter($_SERVER, INPUT_SERVER, $this->custom_filters);
 
@@ -165,13 +163,10 @@ class Request
             return $server;
 
         if (!isset($server[$name]) && !isset($_SERVER[$name]))
-            return null;
+            return NULL;
 
-        if (is_null($server[$name]))
+        if (isset($_SERVER[$name]))
             return $_SERVER[$name];
-
-        if (!isset($server[$name]))
-            return null;
 
         return $server[$name];
     }
@@ -181,7 +176,7 @@ class Request
      * @param string $name Nome do parâmetro
      * @return null Retorna o array $_COOKIE geral ou em um índice específico
      */
-    public function cookie(string $name = null)
+    public function cookie($name = null)
     {
         $cookie = $this->filter($_COOKIE, INPUT_COOKIE, $this->custom_filters);
 
@@ -189,7 +184,7 @@ class Request
             return $cookie;
 
         if (!isset($cookie[$name]))
-            return null;
+            return NULL;
 
         return $cookie[$name];
     }
@@ -199,12 +194,13 @@ class Request
      * @param  string $value Nome do método
      * @return null          Retorna um booleano ou o método em si
      */
-    public function getMethod(string $value = null)
+    public function getMethod($value = null)
     {
         $method = $_SERVER['REQUEST_METHOD'];
 
         if ($value)
             return $method == $value;
+
 
         return $method;
     }
@@ -213,7 +209,7 @@ class Request
      * Verifica se o método da requisição é POST
      * @return boolean Status da verificação
      */
-    public function isPost(): bool
+    public function isPost()
     {
         return $this->getMethod('POST');
     }
@@ -222,7 +218,7 @@ class Request
      * Verifica se o método da requisição é GET
      * @return boolean Status da verificação
      */
-    public function isGet(): bool
+    public function isGet()
     {
         return $this->getMethod('GET');
     }
@@ -231,7 +227,7 @@ class Request
      * Verifica se o método da requisição é PUT
      * @return boolean Status da verificação
      */
-    public function isPut(): bool
+    public function isPut()
     {
         return $this->getMethod('PUT');
     }
@@ -240,7 +236,7 @@ class Request
      * Verifica se o método da requisição é HEAD
      * @return boolean Status da verificação
      */
-    public function isHead(): bool
+    public function isHead()
     {
         return $this->getMethod('HEAD');
     }
@@ -250,7 +246,7 @@ class Request
      *
      * @return boolean Inputs estão corretos ou não
      */
-    public function isValid(): bool
+    public function isValid()
     {
         $method = $this->getMethod();
 

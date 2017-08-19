@@ -3,12 +3,11 @@ namespace HXPHP\System\Helpers\Menu;
 
 class Elements
 {
-
     /**
      * Elementos HTML utilizados na renderização do menu
      * @var array
      */
-    private static $elements = [
+    private static $elements = array(
         /**
          * Tag inicio container
          * ID
@@ -74,7 +73,7 @@ class Elements
          * Conteúdo
          */
         'dropdown_item' => '<li class="%s %s">%s</li>'
-    ];
+    );
 
     /**
      * Retorna um elemento
@@ -82,7 +81,7 @@ class Elements
      * @param  array  $args Array para preencher os coringas presentes nos elementos
      * @return string       HTML do elemento
      */
-    public static function get(string $name, array $args = []): string
+    public static function get($name, array $args = [])
     {
         if (!self::$elements[$name])
             return false;

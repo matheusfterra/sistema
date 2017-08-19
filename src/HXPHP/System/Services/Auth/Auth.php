@@ -1,10 +1,8 @@
 <?php
 namespace HXPHP\System\Services\Auth;
 
-use HXPHP\System\{
-    Http,
-    Storage
-};
+use HXPHP\System\Storage as Storage;
+use HXPHP\System\Http as Http;
 
 class Auth
 {
@@ -33,7 +31,7 @@ class Auth
     /**
      * Método construtor
      */
-    public function __construct(array $after_login, array $after_logout, bool $redirect = false, string $subfolder = 'default')
+    public function __construct($after_login, $after_logout, $redirect = false, $subfolder = 'default')
     {
         //Instância dos objetos injetados
         $this->request = new Http\Request;
@@ -49,6 +47,8 @@ class Auth
         $this->redirect = $redirect;
 
         $this->subfolder = $subfolder;
+
+        return $this;
     }
 
     /**
@@ -57,7 +57,7 @@ class Auth
      * @param  string $username  Nome de usuário
      * @param string $user_role Role do usuário
      */
-    public function login(int $user_id, string $username, string $user_role = null)
+    public function login($user_id, $username, $user_role = null)
     {
         $user_id = intval(preg_replace("/[^0-9]+/", "", $user_id));
         $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username);
@@ -93,7 +93,7 @@ class Auth
      * Valida a autenticação e redireciona mediante o estado do usuário
      * @param  boolean $redirect Parâmetro que define se é uma página pública ou não
      */
-    public function redirectCheck(bool $redirect = false)
+    public function redirectCheck($redirect = false)
     {
         if ($redirect && $this->login_check())
             $this->response->redirectTo($this->url_redirect_after_login);
@@ -124,17 +124,15 @@ class Auth
      * Verifica se o usuário está logado
      * @return boolean Status da autenticação
      */
-    public function login_check(): bool
+    public function login_check()
     {
         if ($this->storage->exists($this->subfolder . '_user_id') &&
                 $this->storage->exists($this->subfolder . '_username') &&
                 $this->storage->exists($this->subfolder . '_login_string')) {
 
-            $IP = is_null($this->request->server('HTTP_X_FORWARDED_FOR')) ? $this->request->server('REMOTE_ADDR') : $this->request->server('HTTP_X_FORWARDED_FOR');
-
             $login_string = hash('sha512', $this->storage->get($this->subfolder . '_username')
-                                             . $IP
-                                             . $this->request->server('HTTP_USER_AGENT'));
+                    . $this->request->server('REMOTE_ADDR')
+                    . $this->request->server('HTTP_USER_AGENT'));
 
             if ($login_string == $this->storage->get($this->subfolder . '_login_string'))
                 return true;
@@ -147,7 +145,7 @@ class Auth
      * Retorna a ID do usuário autenticado
      * @return integer ID do usuário
      */
-    public function getUserId(): int
+    public function getUserId()
     {
         return $this->storage->get($this->subfolder . '_user_id');
     }
@@ -156,7 +154,7 @@ class Auth
      * Retorna o role do usuário autenticado
      * @return string Role do usuário
      */
-    public function getUserRole(): string
+    public function getUserRole()
     {
         return $this->storage->get($this->subfolder . '_user_role');
     }

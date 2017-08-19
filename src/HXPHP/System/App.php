@@ -1,10 +1,7 @@
 <?php
 namespace HXPHP\System;
 
-use HXPHP\System\{
-    Http,
-    Configs\Config
-};
+use HXPHP\System\Http as Http;
 
 class App
 {
@@ -29,11 +26,13 @@ class App
     /**
      * Método Construtor
      */
-    public function __construct(Config $configs)
+    public function __construct(Configs\Config $configs)
     {
         $this->configs = $configs;
         $this->request = new Http\Request($configs->baseURI, $configs->global->controllers->directory);
         $this->response = new Http\Response;
+
+        return $this;
     }
 
     /**

@@ -12,14 +12,14 @@ class Template
                 ->setTemplateFile('alert');
     }
 
-    public function setTemplatePath(string $path): self
+    public function setTemplatePath($path)
     {
         $this->template_path = $path;
 
         return $this;
     }
 
-    public function setTemplateFile(string $file): self
+    public function setTemplateFile($file)
     {
         $this->template_file = $file;
 
@@ -30,7 +30,7 @@ class Template
      * Método resposnável pela obtenção do conteúdo do template
      * @return html
      */
-    public function get(bool $list = false): string
+    public function get($list = false)
     {
         if ($list)
             $this->setTemplateFile('alert-list');
