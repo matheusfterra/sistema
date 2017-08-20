@@ -14,6 +14,8 @@ $configs->env->development->baseURI = '/sistema/';
   'charset' => 'utf8'
   ]);
 
+ $configs->env->development->auth->setURLs('/sistema/home/','/sistema/login/');
+
 /*
   //Globais
   $configs->title = 'Titulo customizado';
