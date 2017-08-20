@@ -39,13 +39,13 @@ class User extends \HXPHP\System\Model
 			array_push($callbackObj->errors, 'A role User não existe. Contate o ADM.');
 			return $callbackObj;
 		}else{
-		$post = array_merge($post, array(
+		$user_data = array(
 			'role_id' => $role->id,
 			'status' => 1
 		));
 		$password = \HXPHP\System\Tools::hashHX($post['password']);
 
-		$post = array_merge($post, $password);
+		$post = array_merge($post, $user_data, $password);
 
 		$cadastrar = self::create($post);
 
