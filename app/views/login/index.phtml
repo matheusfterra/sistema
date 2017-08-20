@@ -1,14 +1,15 @@
-<form method="post" action="">
+<?php echo (isset($this->alert) ? $this->alert : '');?>
+<form method="post" action="<?php echo BASE;?>login/logar/">
     <div class="form-group row">
       <label for="username" class="col-sm-2 col-form-label">Username</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="username" placeholder="Username">
+        <input type="text" class="form-control" id="username" placeholder="Username" name ="username" value="<?php echo $this->request->post('username') ?>">
       </div>
     </div>
     <div class="form-group row">
       <label for="password" class="col-sm-2 col-form-label">Senha</label>
       <div class="col-sm-10">
-        <input type="password" class="form-control" id="password" placeholder="Senha">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Senha">
       </div>
     </div>
  

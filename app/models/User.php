@@ -38,11 +38,11 @@ class User extends \HXPHP\System\Model
 		if(is_null($role)){
 			array_push($callbackObj->errors, 'A role User não existe. Contate o ADM.');
 			return $callbackObj;
-		}else{
+		}
 		$user_data = array(
 			'role_id' => $role->id,
 			'status' => 1
-		));
+		);
 		$password = \HXPHP\System\Tools::hashHX($post['password']);
 
 		$post = array_merge($post, $user_data, $password);
@@ -63,5 +63,48 @@ class User extends \HXPHP\System\Model
 
 		return $callbackObj;
 
+	}
+	public static function login(array $post)
+	{
+		$callbackObj = new \stdClass;
+		$callbackObj->user = null;
+		$callbackObj->status = false;
+		$callbackObj->code = null;
+		$callbackObj->tentativas_restantes = null;
+
+		$user = self::find_by_username($post['username']);
+
+		if(!is_null($user)){
+			$password = \HXPHP\System\Tools::hashHX($post['password'], $user->salt);
+			if($user->status === 1){
+				if(LoginAttempt::ExistemTentativas($user->id)){
+					if($password['password'] === $user->password){
+						$callbackObj->user = $user;
+						$callbackObj->status = true;
+
+						LoginAttempt::LimparTentativas($user->id);
+					}else{
+						if(LoginAttempt::TentativasRestantes($user->id) <= 3){
+							
+							$callbackObj->code = 'tentativas-esgotando';
+							$callbackObj->tentativas_restantes = LoginAttempt::TentativasRestantes($user->id);
+						}else{
+							
+							$callbackObj->code = 'dados-incorretos';
+						}
+						LoginAttempt::RegistrarTentativa($user->id);
+					}
+				}else{
+					$callbackObj->code = 'usuario-bloqueado';
+					$user->status = 0;
+					$user->save(false);
+				}	
+			}else{
+				$callbackObj->code = 'usuario-bloqueado';
+			}
+		}else{
+			$callbackObj->code = 'usuario-inexistente';
+		}
+		return $callbackObj;
 	}
 }
